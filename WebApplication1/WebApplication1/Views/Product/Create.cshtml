@@ -1,0 +1,205 @@
+﻿@model TMDT_Project.ViewModel.GameInput
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<h2 class="text-danger btn ">Nhớ thêm chọn category và thêm nhiều hình ảnh </h2>
+<h4>GameInput</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GameName" class="control-label"></label>
+                <input asp-for="GameName" class="form-control" />
+                <span asp-validation-for="GameName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alias" class="control-label"></label>
+                <input name="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GameDes" class="control-label"></label>
+                <input asp-for="GameDes" class="form-control" />
+                <span asp-validation-for="GameDes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" min="0" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Video" class="control-label"></label>
+                <input asp-for="Video" class="form-control" />
+                <span asp-validation-for="Video" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thumbnail" class="control-label"></label>
+                <input type="file" asp-for="Thumbnail" name="Thumbnail" class="form-control" />
+            </div>
+            <div class="form-group">
+                Hình ảnh cho game
+                <input type="file" asp-for="Images" name="Images" multiple class="form-control" />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="DevId" class="control-label"></label>
+                <select asp-for="DevId" class="form-control" asp-items="@ViewBag.DevId"> </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublisherId" class="control-label"></label>
+                <select asp-for="PublisherId" class="form-control" asp-items="@ViewBag.DevId"> </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Discount" class="control-label"></label>
+                <input asp-for="Discount" min="0" max="100" class="form-control" />
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDis" class="control-label"></label>
+                <input type="date" name="StartDis" class="form-control" />
+                <span asp-validation-for="StartDis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDis" class="control-label"></label>
+                <input type="date" name="EndDis" class="form-control" />
+                <span asp-validation-for="EndDis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categories" class="control-label"></label>
+                <input name="Categories" id="cate" class="form-control" />
+                <span asp-validation-for="Categories" class="text-danger"></span>
+            </div>
+            
+            <div class="container_categories form-control">
+                <div class="select-btn">
+                    <span class="btn-text">Thể loại game</span>
+                    <span class="arrow-dwn">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </span>
+                </div>
+
+                <ul class="list-items">
+                    @{
+                        foreach (var cat in ViewBag.Cate)
+                        {
+                            <li class="item" data-value="@cat.CateId">
+                                <span class="checkbox">
+                                    <i class="fa-solid fa-check check-icon"></i>
+                                </span>
+                                <span class="item-text">@cat.CateName</span>
+                            </li>
+                        }
+                    }
+                    
+                </ul>
+                @* <ul class="list-items">
+                    <li class="item" data-value="item 1">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">HTML & CSS</span>
+                    </li>
+                    <li class="item" data-value="item 2">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">Bootstrap</span>
+                    </li>
+                    <li class="item" data-value="item 3">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">JavaScript</span>
+                    </li>
+                    <li class="item" data-value="item 4">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">Node.Js</span>
+                    </li>
+                    <li class="item" data-value="item 5">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">React JS</span>
+                    </li>
+                    <li class="item" data-value="item 6">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                        <span class="item-text">Mango DB</span>
+                    </li>
+                </ul> *@
+                <a class="btn btn-primary" onclick="setCate()">console log value</a>
+                <a class="btn btn-primary" onclick="printCate()">Cate value</a>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+    
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const cate = [];
+        const inputcate = document.getElementById("cate");
+        
+        const selectBtn = document.querySelector(".select-btn"),
+            items = document.querySelectorAll(".item");
+
+        selectBtn.addEventListener("click", () => {
+            selectBtn.classList.toggle("open");
+        });
+
+        items.forEach(item => {
+            item.addEventListener("click", () => {
+                item.classList.toggle("checked");
+                var cat_value = item.getAttribute("data-value");
+                if (item.classList.contains("checked")) {
+                    cate.push(cat_value);
+                }
+                else {
+                    var index = cate.indexOf(cat_value)
+                    if (index > -1)
+                        cate.splice(index, 1);
+                }
+                inputcate.value = cate;
+
+                let checked = document.querySelectorAll(".checked"),
+                    btnText = document.querySelector(".btn-text");
+
+                if (checked && checked.length > 0) {
+                    btnText.innerText = `${checked.length} Selected`;
+                } else {
+                    btnText.innerText = "Select Language";
+                }
+            });
+        })
+        function setCate() { 
+            console.log(cate);
+
+        }
+        function printCate() {
+            console.log(inputcate.value);
+
+        }
+    </script>
+
+}
+

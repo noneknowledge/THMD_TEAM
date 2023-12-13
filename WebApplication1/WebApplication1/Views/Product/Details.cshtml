@@ -1,0 +1,114 @@
+﻿@model TMDT_Project.ViewModel.GameVM
+    
+@{
+    ViewData["Title"] = Model.GameName;
+    ViewData["Des"] = Model.GameDes;
+    ViewData["Author"] = Model.Dev.Developer1;
+    ViewData["Keyword"] = Model.GameName;
+    ViewData["URL"] = "/pd/" + Model.GameId + "/" + Model.Alias;
+    ViewData["CSSLink"] = "/Product-Details/css/style.css";
+    ViewData["Thumbnail"] = "https://aspnetcore-ecommerce.s3.ap-southeast-1.amazonaws.com/" + Model.Thumbnail;
+    Layout = "/Views/Shared/_layoutTemplate.cshtml";
+    Console.Write(Model.Video);
+
+}
+<div class="alert alert-secondary d-flex justify-content-center" role="alert">
+    @ViewBag.ThongBaoThem
+</div>
+<div class="divCol">
+    <section>
+        <div class="container flex">
+            <div class="left">
+                <div class="main_image align-center">
+                    <img hidden src="/Product-Details/image/p1.jpg" alt="random img" class="img-fluid slide  slide-image">
+                    <iframe width="100%" height="100%" class="slide slide-video" src='@Model.Video' title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                
+                <div class="option flex">
+                    <img src="~/Images/videoIcon.jpg" onclick="playvideo()">
+                    @foreach (var item in Model.GameImages)
+                    {
+                        <img style="width=200px" alt="@Model.GameName" class="img-fluid" src="https://aspnetcore-ecommerce.s3.ap-southeast-1.amazonaws.com/@item.ImageName" onclick="img('https://aspnetcore-ecommerce.s3.ap-southeast-1.amazonaws.com/@item.ImageName')">
+                    }
+                    
+                    @* <img src="/Product-Details/image/p2.jpg" onclick="img('/Product-Details/image/p2.jpg')">
+                    <img src="/Product-Details/image/p3.jpg" onclick="img('/Product-Details/image/p3.jpg')">
+                    <img src="/Product-Details/image/p4.jpg" onclick="img('/Product-Details/image/p4.jpg')"> *@
+                    @* <img src="/Product-Details/image/p5.jpg" onclick="img('/Product-Details/image/p5.jpg')">
+                    <img src="/Product-Details/image/p6.jpg" onclick="img('/Product-Details/image/p6.jpg')"> *@
+                </div>
+                @* asp-route-gameid="@Model.GameId" asp-action="AddToCart" asp-controller="Cart" *@
+                <a id="add" data-value="@Model.GameId"  class="btn detail_button">Add to Bag</a>
+            </div>
+            <div class="right">
+                <h3>@Model.GameName</h3>
+                <h4> <small>$</small>@Model.CurrPrice </h4>
+                <p>@Model.GameDes </p>
+                <div class="row">
+                    <div class="col-3 d-flex align-items-center">
+                        <h3>Thể loại:</h3>
+                    </div>
+                    <div class="col-9 d-flex align-items-center justify-content-between">
+                        @foreach (var item in ViewBag.Cate)
+                        {
+                            <a href="#" class="text-white rounded btn btn-info">@item.Cate.CateName</a>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 d-flex align-items-center">
+                        <h3>Nhà phát triển:</h3>
+                    </div>
+                    <div class="col-3  d-flex align-items-center">
+                        <a href="/dev/@Model.DevId/@Model.Dev.Alias" class="text-white rounded btn btn-info">@Model.Dev.Developer1</a>
+                    </div>
+                    <div class="col-3 d-flex align-items-center">
+                        <h3>Nhà phát hành:</h3>
+                    </div>
+                    <div class="col-3 d-flex align-items-center">
+                        <a href="/dev/@Model.PublisherId/@Model.Publisher.Alias" class="text-white rounded btn btn-info">@Model.Publisher.Developer1</a>
+                    </div>
+                </div>
+
+               
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        $("#add").click(
+            ()=>{
+                var value = $("#add").attr("data-value");
+                
+                $.ajax({
+                    url: "/Cart/AddToCart",
+                    type: "POST",
+                    data: { gameid: value },
+                    success:  (response) => {
+                        alert(response);
+}
+                 })
+        });
+        
+        function hiddenImage(bool) {
+            document.querySelector('.slide-image').hidden = bool
+            document.querySelector('.slide-video').hidden = !bool
+        }
+        function playvideo() {
+            hiddenImage(true)
+        }
+
+        function img(anything) {
+            hiddenImage(false)
+            document.querySelector('.slide').src = anything;
+        }
+
+        function change(change) {
+            const line = document.querySelector('.home');
+            line.style.background = change;
+        }
+    </script>
+
+}
